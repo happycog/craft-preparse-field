@@ -72,7 +72,7 @@ class PreparseFieldService extends Component
 	 * @return null|string|DateTime
 	 * @throws Exception
 	 */
-    public function parseField(PreparseFieldType $field, Element $element): DateTime|string|null
+    public function parseField(PreparseFieldType $field, Element $element): DateTime|array|string|null
 	{
         $fieldTwig = $field->fieldTwig;
         $columnType = $field->columnType;
@@ -125,6 +125,8 @@ class PreparseFieldService extends Component
                 return '';
             }
             return $date;
+        } else if ($columnType === Schema::TYPE_JSON) {
+            return json_decode($fieldValue, true, 512, JSON_THROW_ON_ERROR);
         }
 
         return $fieldValue;
